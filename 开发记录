@@ -38,3 +38,12 @@ hero_elemental_blast_0001.png-hero_elemental_blast_0011.png===>helo
 敌人类实现攻击动作之后对范围内敌人进行伤害
 
 剩余主要工作：
+1.HpBar修改
+2.attackTarget
+3.add New Heroes
+4.soundEngine
+
+
+需要加入：
+敌人的路径
+可移动的位置
