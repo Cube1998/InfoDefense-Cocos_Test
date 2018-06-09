@@ -6,6 +6,7 @@
 //
 
 #include "Enemy.hpp"
+#include "GameManager.hpp"
 
 void Enemy::createAndSetHpBar()
 {
@@ -34,7 +35,9 @@ bool Enemy::init()
     this->HPMax= 30;
     this->setSpriteFrame("darkSlayer_0001.png");
     this->runToPoint(Vec2(1000,500));
+    GameManager::getInstance()->enemyVector.pushBack(this);
     schedule(schedule_selector(Enemy::update));
+    
     return true;
 }
 Enemy * Enemy::createEnemy(cocos2d::Point location)
@@ -53,7 +56,7 @@ Enemy * Enemy::createEnemy(cocos2d::Point location)
 void Enemy::update(float dt)
 {
     this->createAndSetHpBar();
-    if(this->HP<0)this->setVisible(false);
+   // if(this->HP<0)this->setVisible(false);
     
 }
 void Enemy::runToPoint(Vec2 point)
@@ -72,6 +75,6 @@ void Enemy::runToPoint(Vec2 point)
 }
 void Enemy::getHurt(int damage)
 {
-    this->HP-=damage;
+    HP-=damage;
 }
 

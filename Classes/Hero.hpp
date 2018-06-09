@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
+#include "Enemy.hpp"
 USING_NS_CC;
 typedef enum{
     StateNone = 0,
@@ -30,19 +31,23 @@ public:
     HeroState getState();
     int HP;
     int HPMax;
+    int Range;
     Sprite* hpBgSprite;//LifeBar
 protected:
     
     HeroState lastState;
+    HeroState currState;
     virtual void runToPoint(Vec2 point);
-    virtual void runAnimation();
     virtual void createAndSetHpBar();
     virtual void update(float dt){}
-    HeroState currState;
     void stopHeroAnimation();
     virtual void Attack();
     virtual void Skill();
-    bool isLocked;
+    virtual void searchTarget();
+    float getDistanceToEnemy(Enemy *enemy);
+    
+    
+    Enemy *attackTarget;
     
 };
 

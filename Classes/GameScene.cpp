@@ -9,7 +9,7 @@
 #include "Hero.hpp"
 #include "WelcomeScene.hpp"
 #include "Fire.hpp"
-#include "EnemyBase.h"
+
 #include "GameManager.hpp"
 #include <iostream>
 

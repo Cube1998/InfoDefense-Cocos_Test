@@ -17,7 +17,7 @@ Fire * Fire::createFire(Point point)
         fire->currState = StateNone;
         fire->setPosition(point);
         fire->createAndSetHpBar();
-        
+        fire->attackTarget = NULL;
         return fire;
         
     }
@@ -46,6 +46,7 @@ bool Fire::initFire()
     hero_key_listener->onKeyReleased = [&](EventKeyboard::KeyCode keyCode,Event *event)
     {
         if(this->getState()==StateNone){
+            /*
         if(keyCode== EventKeyboard::KeyCode::KEY_W)
             this->runToPoint(Point(this->getPositionX(),this->getPositionY()+50));
         if(keyCode== EventKeyboard::KeyCode::KEY_S)
@@ -54,6 +55,7 @@ bool Fire::initFire()
             this->runToPoint(Point(this->getPositionX()-50,this->getPositionY()));
         if(keyCode== EventKeyboard::KeyCode::KEY_D)
             this->runToPoint(Point(this->getPositionX()+50,this->getPositionY()));
+        */
         if(keyCode== EventKeyboard::KeyCode::KEY_H)
             this->Attack();
         if(keyCode== EventKeyboard::KeyCode::KEY_J)
@@ -81,14 +83,12 @@ void Fire::createAndSetHpBar()
     hpBar->setBarChangeRate(Point(1, 0));
     hpBar->setPercentage(100*HP/HPMax);
     hpBar->setPosition(Point(hpBgSprite->getContentSize().width / 2, hpBgSprite->getContentSize().height / 2 ));
-    hpBgSprite->addChild(hpBar,1,102);
+    hpBgSprite->addChild(hpBar,1);
     
 }
 void Fire::Attack()
 {
     if(getState()!=StateDeath){
-        //unscheduleAllCallbacks();
-        //scheduleUpdate();
         stopAllActions();
         setState(StateAttack);
         runAction(Sequence::create(
@@ -100,8 +100,6 @@ void Fire::Attack()
 void Fire::Skill()
 {
     if(getState()!=StateSkill){
-        //unscheduleAllCallbacks();
-        //scheduleUpdate();
         stopAllActions();
         setState(StateSkill);
         runAction(Sequence::create(DelayTime::create(1.5),
@@ -112,6 +110,7 @@ void Fire::Skill()
 void Fire::update(float dt)
 {
     this->createAndSetHpBar();
+    this->searchTarget();
     /*
     if(GameManager::getInstance()->enemyVector.at(0)->getPosition().getDistance(this->getPosition())<50)
     {
@@ -143,12 +142,11 @@ void Fire::update(float dt)
                 auto action = RepeatForever::create(Animate::create(AnimationCache::getInstance()->getAnimation("fireAttack")));
                 action->setTag(StateAttack);
                 this->runAction(action);
-                if(GameManager::getInstance()->enemyVector.at(0)->getPosition().getDistance(this->getPosition())<50)
+                if(attackTarget)
                 {
-                    
-                    GameManager::getInstance()->enemyVector.at(0)->getHurt(this->damage);
+                    printf("attackTarget");
+                attackTarget->getHurt(this->damage);
                 }
-                
                 
             }
                 break;
@@ -172,8 +170,5 @@ void Fire::update(float dt)
         }
     
 }
-void Fire::SetHpBar()
-{
-  //  this->hpBgSprite->getChildByTag(102)->setPercentage(100*HP/HPMax);
-}
+
 

@@ -6,7 +6,9 @@
 //
 
 #include "Hero.hpp"
+#include "GameManager.hpp"
 #include <iostream>
+#include "cocos2d.h"
 using namespace std;
 void Hero::createAndSetHpBar()
 {
@@ -29,7 +31,6 @@ bool Hero::init()
     {
         return false;
     }
-    this->isLocked = false;
     this->HP=0;
     this->HPMax= 0;
     auto hero_listener = EventListenerTouchOneByOne::create();
@@ -38,8 +39,9 @@ bool Hero::init()
     };
     hero_listener->onTouchEnded = [&](Touch* touch, Event* event){
         if(this->getState()==StateNone)
-        
+        {
         this->runToPoint(touch->getLocation()+Vec2(0,40));
+        }
         else
         {
             this->setState(StateNone);
@@ -54,31 +56,9 @@ bool Hero::init()
     return true;
 }
 
-void Hero::runAnimation()
-{
-    Animation *heroAnimation = Animation::create();
-    for(int i=8;i<=12;i++)
-    {
-        __String * framename = __String::createWithFormat("hero_elemental_0%03d.png",i);
-        
-        SpriteFrame *frame = SpriteFrameCache::getInstance()->  getSpriteFrameByName(framename->getCString());
-        
-        if(frame!=nullptr)
-            heroAnimation->addSpriteFrame(frame);
-    }
-    heroAnimation->setDelayPerUnit(0.1f);
-    heroAnimation->setRestoreOriginalFrame(true);
-    this->runAction(RepeatForever::create(Animate::create(heroAnimation)));
-    
-    
-}
 void Hero::runToPoint(Vec2 point)
 {
-    //this->stopActionByTag(105);
-    
     if(getState()!=StateDeath){
-        //unscheduleAllCallbacks();
-        //scheduleUpdate();
         stopAllActions();
         if((point.x - this->getPositionX())>0){
             this->setFlippedX(false);
@@ -89,10 +69,7 @@ void Hero::runToPoint(Vec2 point)
         auto action = Sequence::create(MoveTo::create(point.getDistance(this->getPosition())/100,point),
                                      CallFuncN::create(CC_CALLBACK_0(Hero::setState, this,StateNone)),
                                      NULL);
-        action->setTag(105);
-        
         runAction(action);
-        
         
     }
     
@@ -101,8 +78,6 @@ void Hero::runToPoint(Vec2 point)
 void Hero::Attack()
 {
     if(getState()!=StateDeath){
-        //unscheduleAllCallbacks();
-        //scheduleUpdate();
         stopAllActions();
         setState(StateAttack);
     }
@@ -110,8 +85,6 @@ void Hero::Attack()
 void Hero::Skill()
 {
     if(getState()!=StateDeath){
-        //unscheduleAllCallbacks();
-        //scheduleUpdate();
         stopAllActions();
         setState(StateSkill);
     }
@@ -130,7 +103,34 @@ void Hero::stopHeroAnimation()
     {
         this->stopActionByTag(i);
     }
+}
+void Hero::searchTarget()
+{
+    auto enemyVector = GameManager::getInstance()->enemyVector;
+    //printf("%zd",enemyVector.size());
+    if(enemyVector.size()>0)
+    {
+    float shortestDistance = getDistanceToEnemy(enemyVector.at(0));
+        this->attackTarget = enemyVector.at(0);
+    for(int i=0;i<enemyVector.size();i++)
+    {
+        auto tmp = enemyVector.at(i);
+        auto disTmp = getDistanceToEnemy(tmp);
+        if(shortestDistance>disTmp)
+        {
+            shortestDistance = disTmp;
+            this->attackTarget = tmp;
+            //CC_SAFE_DELETE(tmp);
+            
+        }
+    }
+    }
+    else {
+        this->attackTarget = NULL;
+    }
     
-    this->removeChildByTag(101);
-    
+}
+float Hero::getDistanceToEnemy(Enemy* enemy)
+{
+    return this->getPosition().getDistance(enemy->getPosition());
 }

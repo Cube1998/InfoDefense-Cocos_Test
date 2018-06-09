@@ -67,15 +67,8 @@ void LoadingScene::Load()
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("ingame_gui-hd.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("common_spritesheet_16_a_2-hd.plist");
     
-    
-    //label->runAction(DelayTime::create(1));
-    //auto scene = WelcomeScene::createScene();
-    //Director::getInstance()->replaceScene(scene);
-    //Director::getInstance()->runWithScene(scene);
-    //Add Create Animation
     loadAnimation animation;
     animation.initAnimation();
-    
     
     
 }
