@@ -11,7 +11,10 @@
 #include "SlotMenu.h"
 #include "LoadingScene.h"
 #include "GameScene.h"
+#include "cocos2d.h"
+#include "SimpleAudioEngine.h"
 USING_NS_CC;
+
 using namespace std;
 Scene* WelcomeScene::createScene()
 {
@@ -81,6 +84,8 @@ bool WelcomeScene::init() {
 	MainLogo->runAction(Sequence::create(ac0,ac1, NULL));
 
 	*/
+    CocosDenshion:: SimpleAudioEngine::getInstance()->playBackgroundMusic("MusicMap.mp3", true);
+    
 	initBackGround();
 	initLogo();
 	initMenu_save();
@@ -148,6 +153,7 @@ void WelcomeScene::initLogo()
 void WelcomeScene::initLogoAnimation()
 {
 
+    
 	auto sprite = Sprite::createWithSpriteFrameName("logo_brillo_0001.png");
 	sprite->setPosition(point_Logo);
 	SpriteFrame* frame = NULL;
@@ -197,6 +203,7 @@ void WelcomeScene::initButton_start()
 			DelayTime::create(0.3f),
 			MoveTo::create(0.3f, Point(point_Logo.x, point_Logo.y)), NULL));
 		button_Start->setVisible(false);
+        CocosDenshion:: SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		Director::getInstance()->replaceScene(GameScene::createScene());
         
 

@@ -14,23 +14,25 @@
 #include "Enemy.h"
 #include "Arrow.h"
 #include "Tower.h"
-using namespace std;
-USING_NS_CC;
+#include <vector>
+
+
 class GameManager : public Node
 {
 public:
 	static GameManager* getInstance();
-	Vector<Enemy*> enemyVector;
-    Vector<Arrow *> arrowVector;
-    Vector<TowerBase *>towerVector;
 
-    
-    vector<vector<vector<Vec2 >>>  path;
+	Vector<EnemyBase *> enemyVector;
+	Vector<Arrow *> arrowVector;
+	Vector<TowerBase *>towerVector;
+	std::vector<std::vector<std::vector<Vec2 >>>  path;
+
+
+	void TowersFire();
+	void enemyUpdate();
+	void ArrowUpdate();
+
 	static void deleteThis();
-    
-    void TowersFire();
-    void enemyUpdate();
-    void ArrowUpdate();
 private:
 	static GameManager * instance;
 };

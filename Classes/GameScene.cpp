@@ -46,31 +46,26 @@ bool GameScene::init()
 
 	//Add Characters
 
-	tw = Tower1::createTower1(Vec2(600, 300));
-	this->addChild(tw, 5);
-	tws.push_back(tw);
+	//tw = Tower1::createTower1(Vec2(600, 300));
+	//this->addChild(tw, 5);
+    //GameManager::getInstance()->towerVector.pushBack(tw);
 
 	//Fire *fire = Fire::createFire(Vec2(496.5547*1.15, 36.352*1.20+50));
-	//addChild(fire, 4);
+	//addChild(fire, 1);
 
     Thor *thor = Thor::createThor(Vec2(visibleSize.width / 2, visibleSize.height / 2) + Vec2(200, 50));
     addChild(thor, 4);
-    
-	auto enemy = Enemy::createEnemy(Vec2(visibleSize.width / 2, visibleSize.height / 2) + Vec2(0, 50));
-	GameManager::getInstance()->enemyVector.pushBack(enemy);
-	ems.push_back(enemy);
+   
+    schedule(schedule_selector(GameScene::createEnemy), 3.0f);
+	//auto enemy = Enemy::createEnemy();
+	//GameManager::getInstance()->enemyVector.pushBack(enemy);
 
-	this->addChild(enemy, 1);
+
+	//this->addChild(enemy, 4);
 
 	//EnemyBase *enemy1 = new EnemyBase();
 	//enemy1->setPic("darkSlayer_0001.png");
 	//this->addChild(enemy1,3);
-
-    auto tmp = GameManager::getInstance()->path;
-    for(int i = 0;i<tmp.size();i++)
-        for(int j = 0 ;j<tmp.at(i).size();j++)
-            for(int k = 0;k<tmp.at(i).at(j).size();k++)
-                cout<<tmp.at(i).at(j).at(k).x<<"  "<<tmp.at(i).at(j).at(k).y<<endl;
 
 	//characters created
 
@@ -90,9 +85,154 @@ bool GameScene::init()
 
 	this->scheduleUpdate();
 
-	this->schedule(schedule_selector(GameScene::fire), 1.0f);
+	this->schedule(schedule_selector(GameScene::fire), 0.1f);
+    setNode();
+    
+    auto myMouseListener = EventListenerTouchOneByOne::create();
+    myMouseListener->onTouchBegan = [&](Touch* touch, Event* event) {
+        if (CCTouchEnded(touch, event)) {
+            menuBuildCallback();
+        }
+        return true;
+    };
+    _eventDispatcher->addEventListenerWithSceneGraphPriority(myMouseListener, this);
+
+    
+    this->addChild(GameManager::getInstance());
 
 	return true;
+}
+void GameScene::setNode()
+{
+    // int i = 0;
+    for (int i=0; i < 7; i++)
+    {
+  node[i].setAnchorPoint(Vec2::ZERO);
+   node[i].setContentSize(Size(100, 100));
+    }
+    node[0].setPosition(Vec2(670, 220));
+    node[1].setPosition(Vec2(550, 220));
+    node[2].setPosition(Vec2(430, 220));
+    
+    node[3].setPosition(Vec2(270, 410));
+    node[4].setPosition(Vec2(400, 410));
+    
+    node[5].setPosition(Vec2(720, 410));
+    node[6].setPosition(Vec2(845, 410));
+}
+MenuItemSprite * GameScene::MenuBuild(Point location, int number)
+{
+    if (number == 1) {
+        auto sprite1 = Sprite::createWithSpriteFrameName("main_icons_0005.png");
+        auto sprite2 = Sprite::createWithSpriteFrameName("main_icons_disabled_0005.png");
+        auto menu = MenuItemSprite::create(sprite2, sprite1, CC_CALLBACK_1(GameScene::menuCloseCallback, this));
+        menu->setAnchorPoint(Vec2::ZERO);
+        menu->setScale(0.7, 0.7);
+        menu->setPosition(Vec2(location.x + 20, location.y + 20));
+        return menu;
+    }
+    else if (number == 2){
+        auto sprite1 = Sprite::createWithSpriteFrameName("main_icons_0006.png");
+        auto sprite2 = Sprite::createWithSpriteFrameName("main_icons_disabled_0006.png");
+        auto menu = MenuItemSprite::create(sprite2, sprite1, CC_CALLBACK_1(GameScene::menuTower1Callback, this));
+        menu->setAnchorPoint(Vec2::ZERO);
+        menu->setScale(0.5, 0.5);
+        menu->setPosition(Vec2(location.x-20, location.y - 20));
+        return menu;
+    }
+    else if (number == 3) {
+        auto sprite1 = Sprite::createWithSpriteFrameName("main_icons_0011.png");
+        auto sprite2 = Sprite::createWithSpriteFrameName("main_icons_disabled_0011.png");
+        auto menu = MenuItemSprite::create(sprite2, sprite1, CC_CALLBACK_1(GameScene::menuTower2Callback, this));
+        menu->setAnchorPoint(Vec2::ZERO);
+        menu->setScale(0.5, 0.5);
+        menu->setPosition(Vec2(location.x + 30, location.y + 86));
+        return menu;
+    }
+    else if (number == 4) {
+        auto sprite1 = Sprite::createWithSpriteFrameName("main_icons_0013.png");
+        auto sprite2 = Sprite::createWithSpriteFrameName("main_icons_disabled_0013.png");
+        auto menu = MenuItemSprite::create(sprite2, sprite1, CC_CALLBACK_1(GameScene::menuTower3Callback, this));
+        menu->setAnchorPoint(Vec2::ZERO);
+        menu->setScale(0.5, 0.5);
+        menu->setPosition(Vec2(location.x + 84, location.y - 19));
+        return menu;
+    }
+    else if (number == 0) {
+        auto sprite1 = Sprite::createWithSpriteFrameName("Stage_6.png");
+        auto menu = MenuItemSprite::create(sprite1, sprite1, CC_CALLBACK_1(GameScene::menuQuitCallback, this));
+        menu->setAnchorPoint(Vec2::ANCHOR_MIDDLE);
+        menu->setPosition(location);
+        return menu;
+    }
+    
+    return nullptr;
+}
+bool GameScene::CCTouchEnded(Touch * pTouch, Event * event)
+{
+    Point touchLocation = convertTouchToNodeSpace(pTouch);
+    for (_number = 0; _number < 7; _number++) {
+        if (Overlap(&node[_number], touchLocation))
+            return true;
+    }
+    
+    _number = -1;
+    return false;
+}
+bool GameScene::Overlap(Node* pNode, Point touch)
+{
+    float _x = pNode->getPosition().x, _y = pNode->getPosition().y;
+    float _width = pNode->getContentSize().width, _height = pNode->getContentSize().height;
+    if (touch.x > _x && touch.x < _x + _width && touch.y > _y && touch.y < _y + _height)
+        return true;
+    return false;
+}
+void GameScene::menuBuildCallback()
+{
+    Size visibleSize = Director::getInstance()->getVisibleSize();
+    auto Destin = MenuBuild(node[_number].getPosition(), 1);
+    
+    auto Tower1 = MenuBuild(node[_number].getPosition(), 2);
+    auto Tower2 = MenuBuild(node[_number].getPosition(), 3);
+    auto Tower3 = MenuBuild(node[_number].getPosition(), 4);
+    
+    auto Quit = MenuBuild(Vec2(visibleSize.width / 2, visibleSize.height / 2), 0);
+    
+    menu1 = Menu::create(Destin, Tower1, Tower2, Tower3, NULL);
+    menu1->setPosition(Vec2::ZERO);
+    this->addChild(menu1, 2);
+    
+    menu2 = Menu::create(Quit, NULL);
+    menu2->setAnchorPoint(Vec2::ZERO);
+    menu2->setPosition(Vec2::ZERO);
+    this->addChild(menu2, 0);
+}
+void GameScene::menuTower2Callback(cocos2d::Ref * pSender)
+{
+}
+
+void GameScene::menuTower3Callback(cocos2d::Ref * pSender)
+{
+}
+
+void GameScene::menuQuitCallback(cocos2d::Ref * pSender)
+{
+    menu1->removeAllChildren();
+    menu2->removeAllChildren();
+}
+
+
+void GameScene::menuTower1Callback(cocos2d::Ref * pSender)
+{
+    tw = Tower1::createTower1(Vec2(node[_number].getPositionX() -20, node[_number].getPositionY()+5));
+    tw->setAnchorPoint(Vec2::ZERO);
+    this->addChild(tw, 5);
+    GameManager::getInstance()->towerVector.pushBack(tw);
+    //tws.push_back(tw);
+    menu1->removeAllChildren();
+    menu2->removeAllChildren();
+    node[_number].setPosition(Vec2::ZERO);
+    node[_number].setContentSize(Size::ZERO);
 }
 void GameScene::BackToWelcomeScene(Ref *pSpender)
 {
@@ -115,32 +255,18 @@ void GameScene::menuCloseCallback(Ref* pSender)
 
 void GameScene::update(float)
 {
-	for (const auto em : ems)if (em->getHP()>0)em->update(5);
-	else (removeChild(em));
-
-	std::vector<Arrow *>::iterator dit;
-	int k = 0;
-	for (auto g = ars.begin(); g != ars.end(); ++g)
-	{
-		if ((*g)->getHP()>0 && (*g)->getTarget() != nullptr)(*g)->update(0);
-		else
-		{
-			dit = g;
-			++k;
-		}
-	}
-	if (k)ars.erase(dit);
+    GameManager::getInstance()->ArrowUpdate();
+    GameManager::getInstance()->enemyUpdate();
 }
 
 void GameScene::fire(float)
 {
-	for (const auto & k : tws)for (const auto em : ems)
-		if (k->if_attack(em) && em->getHP()>0)
-		{
-			auto ar1 = tw->attack(em);
-			ar1->setSpriteFrame("arcanehit_0011.png");
-			ar1->setPosition(k->getPosition());
-			this->addChild(ar1, 4);
-			ars.push_back(ar1);
-		}
+    GameManager::getInstance()->TowersFire();
+}
+void GameScene::createEnemy(float dt)
+{
+    auto enemy = Enemy::createEnemy();
+    GameManager::getInstance()->enemyVector.pushBack(enemy);
+    this->addChild(enemy,3);
+    //GameManager::getInstance()->enemyVector .push_back(enemy);
 }

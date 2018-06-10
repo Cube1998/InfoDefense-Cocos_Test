@@ -25,8 +25,8 @@ const bool could_a1(1);
 const bool could_a2(1);
 const bool could_a3(0);
 
-const int ATK1(10);
-const int ATK2(800);
+const int ATK1(50);
+const int ATK2(80);
 const int ATK3(0);
 
 const int range1(600);
@@ -36,35 +36,35 @@ const int range3(0);
 class Tower1 : public TowerBase
 {
 public:
-    Tower1();
-    static Tower1 * createTower1(Point location);
-    bool initTower1();
-    CREATE_FUNC(Tower1);
-    
-    bool if_attack(Obj*) override;
-    Arrow * attack(Obj*);
+	Tower1();
+	static Tower1 * createTower1(Point location);
+	bool initTower1();
+	CREATE_FUNC(Tower1);
+
+	bool if_attack(Obj*) override;
+	Arrow * attack(Obj*);
 };
 
 class Tower2 : public TowerBase
 {
 public:
-    Tower2();
-    static Tower2 * createTower2(Point point);
-    
-    bool initTower2();
-    CREATE_FUNC(Tower2);
-    
-    bool if_attack(Obj*) override;
-    Arrow * attack(Obj*) override;
+	Tower2();
+	static Tower2 * createTower2(Point point);
+
+	bool initTower2();
+	CREATE_FUNC(Tower2);
+
+	bool if_attack(Obj*) override;
+	Arrow * attack(Obj*) override;
 };
 
 class Tower3 : public TowerBase
 {
 public:
-    Tower3();
-    static Tower3 * creatTower3();
-    
-    Arrow * attack(Obj*);
+	Tower3();
+	static Tower3 * creatTower3();
+
+	Arrow * attack(Obj*);
 };
 
 #endif

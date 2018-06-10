@@ -159,7 +159,7 @@ void Hero::searchTarget()
     }
     
 }
-float Hero::getDistanceToEnemy(Enemy* enemy)
+float Hero::getDistanceToEnemy(EnemyBase* enemy)
 {
     return this->getPosition().getDistance(enemy->getPosition());
 }

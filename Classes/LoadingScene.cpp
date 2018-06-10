@@ -9,7 +9,10 @@
 #include "WelcomeScene.h"
 #include "GameScene.h"
 #include "Animation.h"
+#include "cocos2d.h"
+#include "SimpleAudioEngine.h"
 USING_NS_CC;
+using namespace CocosDenshion;
 
 Scene* LoadingScene::createScene()
 {
@@ -73,6 +76,11 @@ void LoadingScene::Load()
     
     loadAnimation animation;
     animation.initAnimation();
+    
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic( "MusicMainMenu.mp3");
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic( "MusicMap.mp3");
+    SimpleAudioEngine::getInstance()->preloadBackgroundMusic( "MusicSuspense.mp3");
+    
     
     
 }

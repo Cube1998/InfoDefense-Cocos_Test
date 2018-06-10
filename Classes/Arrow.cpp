@@ -27,7 +27,7 @@ void Arrow::update(float dt)
 	if (target!=nullptr && target->getHP() > 0)
 	{
 		
-		Vec2 ds = target->getPosition() - this->getPosition();
+		Vec2 ds = target->getPosition()+Vec2(-30,-5) - this->getPosition();
 
 		float dl = sqrt(ds.x*ds.x + ds.y*ds.y);
 		if (dl < 10 || target->getHP() < 0)

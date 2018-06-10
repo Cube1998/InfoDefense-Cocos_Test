@@ -38,7 +38,7 @@ public:
 	Sprite* hpBgSprite;//LifeBar
 	ProgressTimer * hpBar;
 protected:
-    Enemy *attackTarget;
+    EnemyBase *attackTarget;
 	HeroState lastState;
 	virtual void runToPoint(Vec2 point);
 	virtual void runAnimation();
@@ -49,7 +49,7 @@ protected:
 	virtual void Attack();
 	virtual void Skill();
     virtual void searchTarget();
-    float getDistanceToEnemy(Enemy *enemy);
+    float getDistanceToEnemy(EnemyBase *enemy);
     
 
 };

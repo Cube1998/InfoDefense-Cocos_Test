@@ -10,14 +10,14 @@
 class TowerBase : public Obj
 {
 protected:
-    bool could_attack;  
-    int ATK;
-    int range;
+	bool could_attack;  //ÄÜ·ñ¹¥»÷
+	int ATK; // ¹¥»÷Á¦
+	int range; //·¶Î§
 public:
-    TowerBase(int hp, int side, bool b, int atk, int _range);
-    
-    virtual bool if_attack(Obj*);
-    virtual Arrow * attack(Obj*) = 0;
+	TowerBase(int hp, int side, bool b, int atk, int _range);
+
+	virtual bool if_attack(Obj*);
+	virtual Arrow * attack(Obj*) = 0;
 };
 
 #endif // !TOWER_H
