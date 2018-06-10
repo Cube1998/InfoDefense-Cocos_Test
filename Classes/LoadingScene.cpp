@@ -5,10 +5,10 @@
 //  Created by 张大方 on 2018/6/5.
 //
 
-#include "LoadingScene.hpp"
-#include "WelcomeScene.hpp"
-#include "GameScene.hpp"
-#include "Animation.hpp"
+#include "LoadingScene.h"
+#include "WelcomeScene.h"
+#include "GameScene.h"
+#include "Animation.h"
 USING_NS_CC;
 
 Scene* LoadingScene::createScene()
@@ -66,6 +66,10 @@ void LoadingScene::Load()
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("credits_scene-hd.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("ingame_gui-hd.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("common_spritesheet_16_a_2-hd.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("towers-hd.plist");
+    
+    loadPathFromPlist(__String::create("level6_paths.plist"));
+
     
     loadAnimation animation;
     animation.initAnimation();
@@ -78,4 +82,31 @@ void LoadingScene::logic(float dt)
     auto scene = WelcomeScene::createScene();
     //auto scene = GameScene::createScene();
     Director::getInstance()->replaceScene(scene);
+}
+void LoadingScene::loadPathFromPlist(__String *str)
+{
+    auto plistDic = Dictionary::createWithContentsOfFile(str->getCString());
+    
+    auto path_array = dynamic_cast<__Array*>(plistDic->objectForKey("paths"));
+    
+    for(int i = 0;i<path_array->count();i++)
+    {
+        std::vector<std::vector<Point>> tempPathVector;
+        auto path_array2 = dynamic_cast<__Array*>(path_array->getObjectAtIndex(i));
+        for(int j = 0;j<path_array2->count();j++)
+        {
+            std::vector<Point> tempRandomPathVector;
+            auto path_array3 = dynamic_cast<__Array*>(path_array2->getObjectAtIndex(j));
+            for(int k =0;k<path_array3->count();k++)
+            {
+                auto tempDic = dynamic_cast<__Dictionary*>(path_array3->getObjectAtIndex(k));
+                Point tempPath = Point();
+                tempPath.x = dynamic_cast<__String*>(tempDic->objectForKey("x"))->floatValue()*1.15;
+                tempPath.y = dynamic_cast<__String*>(tempDic->objectForKey("y"))->floatValue()*1.20+50;
+                tempRandomPathVector.push_back(tempPath);
+            }
+            tempPathVector.push_back(tempRandomPathVector);
+        }
+        GameManager::getInstance()->path.push_back(tempPathVector);
+    }
 }

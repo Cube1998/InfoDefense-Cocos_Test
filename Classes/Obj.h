@@ -11,11 +11,12 @@ protected:
 	cocos2d::Vec2 velocity;
 	int HP;
 	int side; // 2 means friend
-	           // 1 means enemy
-	            // 0 means neutrality
+			  // 1 means enemy
+			  // 0 means neutrality
 public:
-	Obj(int _hp,int _side);
-	static Obj* createWithHP_side(int _hp,int _side);
+	Obj(int _hp, int _side);
+	Obj() = default;
+	static Obj* createWithHP_side(int _hp, int _side);
 
 	void setHP(int _hp);
 	void subHP(int _hp);
@@ -23,7 +24,7 @@ public:
 
 	void setVelocity(cocos2d::Vec2);
 	cocos2d::Vec2 getVelocity() const;
-	
+
 	int getSide() const;
 };
 

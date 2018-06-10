@@ -1,6 +1,6 @@
 #include "Obj.h"
 
-Obj::Obj(int _hp,int _side) : HP(_hp), side(_side)
+Obj::Obj(int _hp, int _side) : HP(_hp), side(_side)
 {
 	this->velocity = cocos2d::Vec2::ZERO;
 }

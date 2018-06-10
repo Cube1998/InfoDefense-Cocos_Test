@@ -16,3 +16,4 @@ public:
 
 	CREATE_FUNC(Information);
 };
+

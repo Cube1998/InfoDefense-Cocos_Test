@@ -1,26 +1,26 @@
 /****************************************************************************
- Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
- 
- http://www.cocos2d-x.org
- 
- Permission is hereby granted, free of charge, to any person obtaining a copy
- of this software and associated documentation files (the "Software"), to deal
- in the Software without restriction, including without limitation the rights
- to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- copies of the Software, and to permit persons to whom the Software is
- furnished to do so, subject to the following conditions:
- 
- The above copyright notice and this permission notice shall be included in
- all copies or substantial portions of the Software.
- 
- THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
- THE SOFTWARE.
- ****************************************************************************/
+Copyright (c) 2017-2018 Xiamen Yaji Software Co., Ltd.
+
+http://www.cocos2d-x.org
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+****************************************************************************/
 
 #include "HelloWorldScene.h"
 #include "SimpleAudioEngine.h"
@@ -29,120 +29,120 @@ USING_NS_CC;
 
 Scene* HelloWorld::createScene()
 {
-    return HelloWorld::create();
+	return HelloWorld::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
 static void problemLoading(const char* filename)
 {
-    printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
+	printf("Error while loading: %s\n", filename);
+	printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
 // on "init" you need to initialize your instance
 bool HelloWorld::init()
 {
-    //////////////////////////////
-    // 1. super init first
-    if ( !Scene::init() )
-    {
-        return false;
-    }
+	//////////////////////////////
+	// 1. super init first
+	if (!Scene::init())
+	{
+		return false;
+	}
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+	auto visibleSize = Director::getInstance()->getVisibleSize();
+	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    /////////////////////////////
-    // 2. add a menu item with "X" image, which is clicked to quit the program
-    //    you may modify it.
+	/////////////////////////////
+	// 2. add a menu item with "X" image, which is clicked to quit the program
+	//    you may modify it.
 
-    // add a "close" icon to exit the progress. it's an autorelease object
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("mainmenu_spritesheet_32_2-hd.plist");
-    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("mainmenu_spritesheet_32_1-hd.plist");
-    auto sprite_background = Sprite::createWithSpriteFrameName("mainmenu_bg.png");
-    sprite_background->setPosition(Point(visibleSize.width/2,visibleSize.height/2));
-    addChild(sprite_background,-1);
-    
-    auto sprite_Logo = Sprite::createWithSpriteFrameName("logo.png");
-    //è®¡ç®—Logoå›¾åº”è¯¥åœ¨çš„ä½ç½®
-    Vec2 point_Logo;
-    point_Logo.x = visibleSize.width/2,visibleSize.height;
-    point_Logo.y = visibleSize.height-(sprite_Logo->getContentSize().height/2);
-    //è®¾ç½®ä½ç½®,åˆå§‹å¤§å°
-    sprite_Logo->setScale(0.5f);
-    sprite_Logo->setPosition(point_Logo);
-    addChild(sprite_Logo,1);
-    auto closeItem = MenuItemImage::create(
-                                           "logo.png",
-                                           "logo.png",
-                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+	// add a "close" icon to exit the progress. it's an autorelease object
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("mainmenu_spritesheet_32_2-hd.plist");
+	SpriteFrameCache::getInstance()->addSpriteFramesWithFile("mainmenu_spritesheet_32_1-hd.plist");
+	auto sprite_background = Sprite::createWithSpriteFrameName("mainmenu_bg.png");
+	sprite_background->setPosition(Point(visibleSize.width / 2, visibleSize.height / 2));
+	addChild(sprite_background, -1);
 
-    if (closeItem == nullptr ||
-        closeItem->getContentSize().width <= 0 ||
-        closeItem->getContentSize().height <= 0)
-    {
-        problemLoading("'logo.png' and 'logo.png'");
-    }
-    else
-    {
-        float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
-        float y = origin.y + closeItem->getContentSize().height/2;
-        closeItem->setPosition(Vec2(x,y));
-    }
-    
-    SpriteFrameCache * framecacha  = SpriteFrameCache::getInstance();
-    framecacha->addSpriteFramesWithFile("heroes_fire-hd.plist");
-    
-    ///Animation Started
-    Animation *animate = Animation::create();
-    __String * framename = __String::createWithFormat("hero_elemental_0008.png");
-    
-    SpriteFrame *frame = framecacha->getSpriteFrameByName(framename->getCString());
-    
-    
-    animate->addSpriteFrame(frame);
-    for(int i=10;i<=24;i+=2)
-    {
-        __String * framename = __String::createWithFormat("hero_elemental_00%d.png",i);
-        
-        SpriteFrame *frame = framecacha->getSpriteFrameByName(framename->getCString());
-        
-        
-        animate->addSpriteFrame(frame);
-    }
-    animate->setDelayPerUnit(0.15f);
-    animate->setRestoreOriginalFrame(true);
-    Sprite *fire = Sprite::create();
-    fire->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y-100));
-    this->addChild(fire,0);
-    Animate *action = Animate::create(animate);
-    auto menu = Menu::create(closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu, 1);
-    
-   
+	auto sprite_Logo = Sprite::createWithSpriteFrameName("logo.png");
+	//¼ÆËãLogoÍ¼Ó¦¸ÃÔÚµÄÎ»ÖÃ
+	Vec2 point_Logo;
+	point_Logo.x = visibleSize.width / 2, visibleSize.height;
+	point_Logo.y = visibleSize.height - (sprite_Logo->getContentSize().height / 2);
+	//ÉèÖÃÎ»ÖÃ,³õÊ¼´óÐ¡
+	sprite_Logo->setScale(0.5f);
+	sprite_Logo->setPosition(point_Logo);
+	addChild(sprite_Logo, 1);
+	auto closeItem = MenuItemImage::create(
+		"logo.png",
+		"logo.png",
+		CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
 
-    fire->runAction(RepeatForever::create(action));
-    
-    
-    return true;
+	if (closeItem == nullptr ||
+		closeItem->getContentSize().width <= 0 ||
+		closeItem->getContentSize().height <= 0)
+	{
+		problemLoading("'logo.png' and 'logo.png'");
+	}
+	else
+	{
+		float x = origin.x + visibleSize.width - closeItem->getContentSize().width / 2;
+		float y = origin.y + closeItem->getContentSize().height / 2;
+		closeItem->setPosition(Vec2(x, y));
+	}
+
+	SpriteFrameCache * framecacha = SpriteFrameCache::getInstance();
+	framecacha->addSpriteFramesWithFile("heroes_fire-hd.plist");
+
+	///Animation Started
+	Animation *animate = Animation::create();
+	__String * framename = __String::createWithFormat("hero_elemental_0008.png");
+
+	SpriteFrame *frame = framecacha->getSpriteFrameByName(framename->getCString());
+
+
+	animate->addSpriteFrame(frame);
+	for (int i = 10; i <= 24; i += 2)
+	{
+		__String * framename = __String::createWithFormat("hero_elemental_00%d.png", i);
+
+		SpriteFrame *frame = framecacha->getSpriteFrameByName(framename->getCString());
+
+
+		animate->addSpriteFrame(frame);
+	}
+	animate->setDelayPerUnit(0.15f);
+	animate->setRestoreOriginalFrame(true);
+	Sprite *fire = Sprite::create();
+	fire->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y - 100));
+	this->addChild(fire, 0);
+	Animate *action = Animate::create(animate);
+	auto menu = Menu::create(closeItem, NULL);
+	menu->setPosition(Vec2::ZERO);
+	this->addChild(menu, 1);
+
+
+
+	fire->runAction(RepeatForever::create(action));
+
+
+	return true;
 }
-     
+
 
 
 void HelloWorld::menuCloseCallback(Ref* pSender)
 {
-    //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
+	//Close the cocos2d-x game scene and quit the application
+	Director::getInstance()->end();
 
-    #if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
-    exit(0);
+#if (CC_TARGET_PLATFORM == CC_PLATFORM_IOS)
+	exit(0);
 #endif
 
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() and exit(0) as given above,instead trigger a custom event created in RootViewController.mm as below*/
+	/*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() and exit(0) as given above,instead trigger a custom event created in RootViewController.mm as below*/
 
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
+	//EventCustom customEndEvent("game_scene_close_event");
+	//_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
 }
