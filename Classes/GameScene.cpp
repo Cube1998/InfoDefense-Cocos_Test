@@ -89,7 +89,7 @@ bool GameScene::init()
     
     }
 
-	
+    initUIBtn();
 	
 
 	//characters created
@@ -431,7 +431,7 @@ void GameScene::menuQuitCallback(cocos2d::Ref * pSender)
 void GameScene::saveData()
 {
     ofstream saveout;
-    saveout.open("/Users/cube.z/Test0/save4.dat",ios::out|ios::binary|ios::trunc);
+    saveout.open("save4.dat",ios::out|ios::binary|ios::trunc);
     auto tmp =  Vec2(0,0);
     auto enemyVector = GameManager::getInstance()->enemyVector;
     int killenemy =GameManager::getInstance()->getKillenemy();
@@ -448,5 +448,43 @@ void GameScene::saveData()
 }
 void GameScene::initUIBtn()
 {
-   
+    
+    auto sprite1 = Sprite::createWithSpriteFrameName("main_icons_0003.png");
+    sprite1->setPosition(Vec2::ZERO);
+
+    
+    auto sprite2 = Sprite::createWithSpriteFrameName("main_icons_disabled_0009.png");
+  sprite2->setPosition(Vec2::ZERO);
+    
+    auto item1 = MenuItemSprite::create(sprite1, sprite2, CC_CALLBACK_1(GameScene::CallBtn1, this));
+    item1->setAnchorPoint(Vec2::ZERO);
+    item1->setPosition(Vec2(200,0));
+    Menu *menu1 = Menu::create(item1, NULL);
+    menu1->setPosition(Vec2::ZERO);
+    this->addChild(menu1, 20);
+    
+    auto sprite3 = Sprite::createWithSpriteFrameName("main_icons_0012.png");
+    sprite3->setPosition(Vec2::ZERO);
+    
+    
+    auto sprite4 = Sprite::createWithSpriteFrameName("main_icons_0001.png");
+    sprite4->setPosition(Vec2::ZERO);
+    
+    
+    auto item2 = MenuItemSprite::create(sprite4, sprite4, CC_CALLBACK_1(GameScene::CallBtn2, this));
+    item2->setAnchorPoint(Vec2::ZERO);
+    item2->setPosition(Vec2(300,0));
+    Menu *menu2 = Menu::create(item2, NULL);
+    menu2->setPosition(Vec2::ZERO);
+    this->addChild(menu2, 20);
+    
+    
+}
+void GameScene::CallBtn1(cocos2d::Ref *pSender)
+{
+    GameManager::getInstance()->hero->Attack();
+}
+void GameScene::CallBtn2(cocos2d::Ref *pSender)
+{
+    GameManager::getInstance()->hero->Skill();
 }

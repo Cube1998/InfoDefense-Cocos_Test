@@ -53,7 +53,8 @@ public:
 	void menuTower2Callback(cocos2d::Ref* pSender);
 	void menuTower3Callback(cocos2d::Ref* pSender);
 	void menuQuitCallback(cocos2d::Ref* pSender);
-
+    void CallBtn1(cocos2d::Ref* pSender);
+    void CallBtn2(cocos2d::Ref* pSender);
     void saveData();
     
     void initUIBtn();

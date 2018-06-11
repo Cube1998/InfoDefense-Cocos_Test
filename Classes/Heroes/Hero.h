@@ -40,6 +40,8 @@ public:
     void subHP(int da){HP-=da;}
     int getHP(){return HP;}
     bool checkMovable(Vec2 point);
+    void Attack();
+    void Skill();
 protected:
     EnemyBase *attackTarget;
 	HeroState lastState;
@@ -49,8 +51,7 @@ protected:
 	virtual void update(float dt) {}
 	HeroState currState;
 	void stopHeroAnimation();
-	virtual void Attack();
-	virtual void Skill();
+	
     virtual void searchTarget();
     float getDistanceToEnemy(EnemyBase *enemy);
     
