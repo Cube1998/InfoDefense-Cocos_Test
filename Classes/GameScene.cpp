@@ -10,6 +10,7 @@
 #include "Obj.h"
 #include "WelcomeScene.h"
 #include "Fire.h"
+#include "Thor.h"
 #include "EnemyBase.h"
 #include "Tower.h"
 #include "Arrow.h"
@@ -47,9 +48,21 @@ bool GameScene::init()
 	//Add Characters
 
 	addChild(GameManager::getInstance());
-    Fire *fire = Fire::createFire(Vec2(visibleSize.width / 2, visibleSize.height / 2));
-    addChild(fire, 5);
-    GameManager::getInstance()->hero = fire;
+    if ((GameManager::getInstance()->HeroType==1)) {
+        
+        
+            Fire *fire = Fire::createFire(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+            addChild(fire, 5);
+            GameManager::getInstance()->hero = fire;
+        
+    }
+    else
+    {
+        Thor *thor = Thor::createThor(Vec2(visibleSize.width / 2, visibleSize.height / 2));
+        addChild(thor,5);
+        GameManager::getInstance()->hero = thor;
+    }
+    
     ifstream readdata ;
     readdata.open("/Users/cube.z/Test0/save4.dat",ios::binary|ios::in);
     if(readdata.is_open())
@@ -432,4 +445,8 @@ void GameScene::saveData()
     }
     saveout.close();
     
+}
+void GameScene::initUIBtn()
+{
+   
 }

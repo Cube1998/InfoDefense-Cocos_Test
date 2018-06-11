@@ -3,6 +3,7 @@
 #include "cocos2d.h"
 #include "GameManager.h"
 #include "EnemyBase.h"
+#include "SelectScene.hpp"
 #include <fstream>
 USING_NS_CC;
 using namespace std;

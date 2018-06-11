@@ -33,7 +33,9 @@ bool Hero::init()
 	this->HPMax = 0;
 	auto hero_listener = EventListenerTouchOneByOne::create();
 	hero_listener->onTouchBegan = [&](Touch* touch, Event* event) {
-		return true;
+        cout<<touch->getLocation().x<<"   "<<touch->getLocation().y<<endl;
+        
+        return true;
 	};
 	hero_listener->onTouchEnded = [&](Touch* touch, Event* event) {
 		if (this->getState() == StateNone)
@@ -73,7 +75,8 @@ void Hero::runAnimation()
 }
 void Hero::runToPoint(Vec2 point)
 {
-	
+	if(checkMovable(point))
+    {
 	if (getState() != StateDeath) {
 		//unscheduleAllCallbacks();
 		//scheduleUpdate();
@@ -94,14 +97,13 @@ void Hero::runToPoint(Vec2 point)
 
 
 	}
-
+    }
 
 }
 void Hero::Attack()
 {
 	if (getState() != StateDeath) {
-		//unscheduleAllCallbacks();
-		//scheduleUpdate();
+		
 		stopAllActions();
 		setState(StateAttack);
 	}
@@ -109,8 +111,7 @@ void Hero::Attack()
 void Hero::Skill()
 {
 	if (getState() != StateDeath) {
-		//unscheduleAllCallbacks();
-		//scheduleUpdate();
+		
 		stopAllActions();
 		setState(StateSkill);
 	}
@@ -136,7 +137,7 @@ void Hero::stopHeroAnimation()
 void Hero::searchTarget()
 {
     auto enemyVector = GameManager::getInstance()->enemyVector;
-    //printf("%zd",enemyVector.size());
+    
     if(enemyVector.size()>0)
     {
         float shortestDistance = getDistanceToEnemy(enemyVector.at(0));
@@ -162,4 +163,13 @@ void Hero::searchTarget()
 float Hero::getDistanceToEnemy(EnemyBase* enemy)
 {
     return this->getPosition().getDistance(enemy->getPosition());
+}
+bool Hero::checkMovable(Vec2 point)
+{
+    auto rect1 = Rect(220, 400, 300, 120);
+    auto rect2 = Rect(650, 400, 300, 120);
+    auto rect3 = Rect(360, 200, 400, 120);
+    auto rect4 = Rect(0,0,500,140);
+    return !(rect1.containsPoint(point)||rect2.containsPoint(point)||rect3.containsPoint(point)||rect4.containsPoint(point));
+    
 }

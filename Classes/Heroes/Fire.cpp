@@ -68,7 +68,7 @@ bool Fire::initFire()
 				this->Attack();
 			if (keyCode == EventKeyboard::KeyCode::KEY_J)
 			{
-				this->Skill(); this->HP -= rand_0_1() * 10;
+				this->Skill();
                 
 			}
 		}
@@ -117,6 +117,7 @@ void Fire::Skill()
 		runAction(Sequence::create(DelayTime::create(1.5),
 			CallFuncN::create(CC_CALLBACK_0(Hero::setState, this, StateNone)),
 			NULL));
+        this->HP -= rand_0_1() * 10;
 	}
 }
 void Fire::Death()

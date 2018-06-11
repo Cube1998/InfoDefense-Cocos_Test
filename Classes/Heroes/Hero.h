@@ -39,6 +39,7 @@ public:
 	ProgressTimer * hpBar;
     void subHP(int da){HP-=da;}
     int getHP(){return HP;}
+    bool checkMovable(Vec2 point);
 protected:
     EnemyBase *attackTarget;
 	HeroState lastState;

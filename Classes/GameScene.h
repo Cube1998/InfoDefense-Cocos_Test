@@ -56,6 +56,8 @@ public:
 
     void saveData();
     
+    void initUIBtn();
+    
     
 	CREATE_FUNC(GameScene);
 };

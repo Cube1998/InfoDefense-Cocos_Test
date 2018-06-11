@@ -133,7 +133,7 @@ bool SlotMenu::initWithNum(int num)
 		//	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		//UserDefault::getInstance()->setIntegerForKey(instance->SLOTX_ISEXIT,1);
 		//Director::getInstance()->replaceScene(TransitionGame::create(2.0f, GameView::createScene()));
-        Director::getInstance()->replaceScene(GameScene::create());
+        Director::getInstance()->replaceScene(SelectScene::create());
 	};
 	savelot_Listener->setSwallowTouches(true);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(savelot_Listener, savelot);

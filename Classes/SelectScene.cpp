@@ -24,12 +24,13 @@ bool SelectScene::init()
     //auto sprite1 = Sprite::createWithSpriteFrameName("portraits_hero_0006.png");
     //auto hero1 = MenuItemImage::c
     auto sprite1 = Sprite::createWithSpriteFrameName("portraits_hero_0006.png");
+    sprite1->setScale(1.5f);
     
     
     auto item1 = MenuItemSprite::create(sprite1,sprite1, CC_CALLBACK_1(SelectScene::Callback1, this));
     item1->setPosition(visibleSize.width/2-200,visibleSize.height/2);
-    auto sprite2 = Sprite::createWithSpriteFrameName("hero_portraits_0012.png");
-    
+    auto sprite2 = Sprite::createWithSpriteFrameName("portraits_hero_0014.png");
+    sprite2->setScale(1.5f);
     
     auto item2 = MenuItemSprite::create(sprite2,sprite2, CC_CALLBACK_1(SelectScene::Callback2, this));
     item2->setPosition(visibleSize.width/2+200,visibleSize.height/2);
@@ -40,8 +41,26 @@ bool SelectScene::init()
     this->addChild(menu1, 20);
     return true;
 }
+Scene* SelectScene::createScene()
+{
+    return SelectScene::create();
+    
+    
+}
 void SelectScene::Callback1(cocos2d::Ref *pSender)
 {
+    GameManager::getInstance()->HeroType=1;
+    
+    
+    Director::getInstance()-> replaceScene(GameScene::createScene());
+    
+}
+void SelectScene::Callback2(cocos2d::Ref *pSender)
+{
+    GameManager::getInstance()->HeroType=2;
+    
+    
+    Director::getInstance()-> replaceScene(GameScene::createScene());
     
 }
 
