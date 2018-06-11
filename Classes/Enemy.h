@@ -10,13 +10,13 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
-
+#include "Hero.h"
 #include "EnemyBase.h"
 USING_NS_CC;
 
-const int baseHP = 3000;
+const int baseHP = 500;
 const int baseATK = 10;
-const int baseRange = 100;
+const int baseRange = 50;
 
 class Enemy : public EnemyBase
 {
@@ -31,12 +31,19 @@ public:
     void SetHpBar();
 	Enemy() = default;
 	void update(float dt) override;
+	void setTarget(Hero *h) { target = h; }
+    void setHPMax(int hpmax){HPMax =hpmax;}
+	void fire();
+	int getState() { return state; }
 protected:
-	int HPMax;
+	int HPMax ;
 	std::vector<Vec2> path;
 	std::vector<Vec2>::iterator pit;
 	virtual void runToPoint(Vec2 point);
 	virtual void createAndSetHpBar();
+	int state = 1;
+	int state2 = 1;
+	Hero * target;
 };
 
 #endif /* Enemy_hpp */

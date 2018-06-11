@@ -2,6 +2,7 @@
 //#include "GameView.h"
 //#include "TransitionGame.h"
 //#include "SimpleAudioEngine.h"
+#include "GameScene.h"
 
 //using namespace CocosDenshion;
 
@@ -31,8 +32,9 @@ bool SlotMenu::initWithNum(int num)
 	menu->setPosition(Vec2::ZERO);
 	addChild(menu);
 
-	label_hint = Label::createWithTTF("DELETE SLOT?", "Comic_Book.ttf", 32, Size::ZERO, TextHAlignment::LEFT, TextVAlignment::TOP);
+	label_hint = Label::createWithTTF("DELETE SLOT?", "YIKES.ttf", 32, Size::ZERO, TextHAlignment::LEFT, TextVAlignment::TOP);
 	label_hint->setColor(Color3B(219, 205, 139));
+    //label_hint->setColor(Color3B::BLACK);
 	label_hint->setPosition(Point(savelot->getContentSize().width / 2, savelot->getContentSize().height / 3 * 2));
 	auto confirm_Delete = MenuItemSprite::create(Sprite::createWithSpriteFrameName("mainmenu_saveslot_confirmdelete_0001.png"),
 		Sprite::createWithSpriteFrameName("mainmenu_saveslot_confirmdelete_0001.png"),
@@ -52,8 +54,38 @@ bool SlotMenu::initWithNum(int num)
 	confirm->setVisible(false);
 	savelot->addChild(confirm);
 
-	if (UserDefault::getInstance()->getIntegerForKey(String::createWithFormat("Slot%d", getNum())->getCString(), 0) == 0)
+    
+    
+    //auto scene = GameScene::create();
+    //scene-> addChild(GameManager::getInstance());
+	//if (UserDefault::getInstance()->getIntegerForKey(String::createWithFormat("Slot%d", getNum())->getCString(), 0) == 0)
+    ifstream readdata ;
+    readdata.open("/Users/cube.z/Test0/save4.dat",ios::binary|ios::in);
+    if(readdata.is_open()&&num == 1)
+    {
+        //GameManager::getInstance()->cleanup();
+        int killEnemy;
+        readdata.read((char*)&killEnemy,sizeof(int));
+       
+        
+        auto node = Sprite::create();
+        
+        auto label_slot = Label::createWithTTF(String::createWithFormat("SLOT %d", num)->getCString(), "SohoGothicProMedium.ttf", 32, Size::ZERO, TextHAlignment::LEFT, TextVAlignment::TOP);
+        label_slot->setColor(Color3B(219, 205, 139));
+        label_slot->setPosition(Point(savelot->getContentSize().width / 2, savelot->getContentSize().height / 3 * 2));
+        node->addChild(label_slot);
+       
+        
+        auto slot = Label::createWithTTF(String::createWithFormat("KillEnemy:%d", killEnemy)->getCString(), "SohoGothicProMedium.ttf", 32, Size::ZERO, TextHAlignment::LEFT, TextVAlignment::TOP);
+        slot->setColor(Color3B(219, 205, 139));
+        slot->setPosition(Point(savelot->getContentSize().width / 4 * 2.5, savelot->getContentSize().height / 3));
+        node->addChild(slot);
+        node->setTag(NEWGAME);
+        savelot->addChild(node);
+    }
+    else if(true)
 	{
+        
 		createNewGame();
 		button_Savelot_Delete->setVisible(false);
 	}
@@ -101,6 +133,7 @@ bool SlotMenu::initWithNum(int num)
 		//	SimpleAudioEngine::getInstance()->stopBackgroundMusic();
 		//UserDefault::getInstance()->setIntegerForKey(instance->SLOTX_ISEXIT,1);
 		//Director::getInstance()->replaceScene(TransitionGame::create(2.0f, GameView::createScene()));
+        Director::getInstance()->replaceScene(GameScene::create());
 	};
 	savelot_Listener->setSwallowTouches(true);
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(savelot_Listener, savelot);
@@ -126,12 +159,12 @@ void SlotMenu::conform_delete(Ref* pSender)
 	savelot->getChildByTag(LABEL_HINT)->setVisible(false);
 	savelot->removeChildByTag(NEWGAME);
 	createNewGame();
-	deleteRecord(getNum());
+	//deleteRecord(getNum());
 }
 
 void SlotMenu::createNewGame()
 {
-	auto label = Label::createWithTTF("new game", "Comic_Book.ttf", 42, Size::ZERO, TextHAlignment::LEFT, TextVAlignment::TOP);
+	auto label = Label::createWithTTF("new game", "YIKES.ttf", 42, Size::ZERO, TextHAlignment::LEFT, TextVAlignment::TOP);
 	label->setColor(Color3B(219, 205, 139));
 	label->setPosition(Point(savelot->getContentSize().width / 2, savelot->getContentSize().height / 2));
 	label->setTag(NEWGAME);
@@ -142,13 +175,13 @@ SlotMenu* SlotMenu::createMenu(int num)
 {
 	auto slotMenu = new SlotMenu();
 
-	/*
+	
 	if (slotMenu && slotMenu->initWithNum(num))
 	{
 	slotMenu->autorelease();
 	return slotMenu;
 	}
-	*/
+	
 	CC_SAFE_DELETE(slotMenu);
 	return NULL;
 }

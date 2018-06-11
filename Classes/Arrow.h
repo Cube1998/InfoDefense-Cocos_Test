@@ -11,7 +11,7 @@ class Arrow : public cocos2d::Sprite
 {
 protected:
 	cocos2d::Vec2 velocity;
-	int speed = 4;
+	int speed = 8;
 	int ATK;
 	int HP = 10;
 	Obj * target;

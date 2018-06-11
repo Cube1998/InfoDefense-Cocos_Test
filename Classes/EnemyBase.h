@@ -13,7 +13,7 @@ protected:
 	int ATK;
 	int range;
 public:
-	void update(float) override;
+	virtual void update(float) override;
 	EnemyBase();
 	static EnemyBase * creat();
 	void setPic(char* str);

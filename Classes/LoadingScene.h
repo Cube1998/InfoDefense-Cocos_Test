@@ -23,7 +23,7 @@ public:
 	CREATE_FUNC(LoadingScene);
 	void Load();
     void loadPathFromPlist(cocos2d::__String *str);
-    
+    void loadMapListFromPlist(cocos2d::__String *str);
     
     
  };

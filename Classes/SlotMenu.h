@@ -1,8 +1,11 @@
 #ifndef _SLOT_MENU_H_
 #define _SLOT_MENU_H_
 #include "cocos2d.h"
+#include "GameManager.h"
+#include "EnemyBase.h"
+#include <fstream>
 USING_NS_CC;
-
+using namespace std;
 class SlotMenu : public Sprite
 {
 public:

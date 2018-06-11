@@ -32,58 +32,7 @@ bool WelcomeScene::init() {
 	}
 	visibleSize = Director::getInstance()->getVisibleSize();
 
-	//Vec2 origin = Director::getInstance()->getVisibleOrigin();
-	//导入背景文件
-	//SpriteFrameCache * framecacha  = SpriteFrameCache::getInstance();
-
-	/*
-	//生成背景
-
-	auto sprite_background = Sprite::createWithSpriteFrameName("mainmenu_bg.png");
-	sprite_background->setPosition(Vec2(visibleSize.width/2,visibleSize.height/2));
-	this->addChild(sprite_background,-1);
-
-
-	//生成logo
-	Vec2 logo_point;
-	Sprite * MainLogo = Sprite::createWithSpriteFrameName("logo.png");
-
-	logo_point.set(visibleSize.width/2,visibleSize.height/2+100);
-
-	MainLogo->setAnchorPoint(Vec2(0.5,0.5));
-	MainLogo->setPosition(logo_point);
-	MainLogo->setScale(0.2, 0.2);
-
-
-	this->addChild(MainLogo,0);
-
-	//从资源中加图片，设置位置
-	auto sprite = Sprite::create();
-	sprite->setPosition(logo_point);
-	this->addChild(sprite,10);
-	//生成帧动画
-	Animation *animate = Animation::create();
-	SpriteFrame* frame = nullptr;
-	__String *framename = __String::create("");
-	for(int No=1;No<=21;No++)
-	{
-	framename = __String::createWithFormat("logo_brillo_00%02d.png",No);
-	std::cout<<framename->getCString()<<std::endl;
-
-	frame = SpriteFrameCache::getInstance()->getSpriteFrameByName(framename->getCString());
-	if(frame!=nullptr){
-	animate->addSpriteFrame(frame);
-	std::cout<<"animate->addSpriteFrame(frame);"<<std::endl;
-	}
-	}
-	animate->setDelayPerUnit(0.1f);
-	//播放动画
-	//sprite->runAction(RepeatForever::create(Animate::create(animate)));
-	FiniteTimeAction *ac1 = (FiniteTimeAction *)MainLogo->runAction((Animate::create(animate)));
-	FiniteTimeAction *ac0 = (FiniteTimeAction *)MainLogo->runAction(ScaleTo::create(1, 1));
-	MainLogo->runAction(Sequence::create(ac0,ac1, NULL));
-
-	*/
+	
     CocosDenshion:: SimpleAudioEngine::getInstance()->playBackgroundMusic("MusicMap.mp3", true);
     
 	initBackGround();
@@ -199,13 +148,16 @@ void WelcomeScene::initButton_start()
 		auto target = static_cast<Sprite*>(event->getCurrentTarget());
 		static_cast<Sprite*>(event->getCurrentTarget())->setSpriteFrame(SpriteFrameCache::getInstance()->getSpriteFrameByName("menu_startchain_0001.png"));
 
+        button_credit->setVisible(false);
+        button_credit->runAction(MoveTo::create(0.3f, Point(point_Logo.x,point_Logo.y - 180)));
 		button_Start->runAction(Sequence::create(
 			DelayTime::create(0.3f),
 			MoveTo::create(0.3f, Point(point_Logo.x, point_Logo.y)), NULL));
 		button_Start->setVisible(false);
         CocosDenshion:: SimpleAudioEngine::getInstance()->stopBackgroundMusic();
-		Director::getInstance()->replaceScene(GameScene::createScene());
-        
+		//Director::getInstance()->replaceScene(GameScene::createScene());
+        sprite_Logo->setVisible(false);
+        setSaveMenuVisible();
 
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(button_Start_listener, button_Start);
@@ -260,23 +212,23 @@ void WelcomeScene::initMenu_save()
 	menu_Save = Sprite::createWithSpriteFrameName("mainmenu_saveslot_bg.png");
 
 	point_Menu_Save.x = point_Logo.x;
-	point_Menu_Save.y = point_Logo.y - sprite_Logo->getContentSize().height*1.4 / 2;
+    point_Menu_Save.y = visibleSize.height/2;
 
-	menu_Save->setPosition(Point(point_Menu_Save.x, point_Menu_Save.y - 500));
+	menu_Save->setPosition(Point(point_Menu_Save.x, point_Menu_Save.y - 700));
 
-	/*
+	
 	auto slot_0 = SlotMenu::createMenu(2);
-	slot_0->setPosition(Point(menu_Save->getContentSize().width/2,menu_Save->getContentSize().height/2));
+	slot_0->setPosition(Point(menu_Save->getContentSize().width/2,menu_Save->getContentSize().height*3/4));
 	menu_Save->addChild(slot_0);
 
 	auto slot_1 = SlotMenu::createMenu(1);
-	slot_1->setPosition(Point(menu_Save->getContentSize().width/4 -30,menu_Save->getContentSize().height/2));
+	slot_1->setPosition(Point(menu_Save->getContentSize().width/2,menu_Save->getContentSize().height/2));
 	menu_Save->addChild(slot_1);
 
 	auto slot_2 = SlotMenu::createMenu(3);
-	slot_2->setPosition(Point(menu_Save->getContentSize().width/4*3 +30,menu_Save->getContentSize().height/2));
+	slot_2->setPosition(Point(menu_Save->getContentSize().width/2,menu_Save->getContentSize().height/4));
 	menu_Save->addChild(slot_2);
-	*/
+	
 	addChild(menu_Save, 0);
 	button_Menu_Save_Close = MenuItemSprite::create(Sprite::createWithSpriteFrameName("mainmenu_saveslot_close_0001.png"),
 		Sprite::createWithSpriteFrameName("mainmenu_saveslot_close_0002.png"),
@@ -296,11 +248,18 @@ void WelcomeScene::savemenuCloseCallback(cocos2d::Ref* pSender)
 	setSaveMenuInVisible();
 	initButton_startAnimation();
 	init_creditBtn_startAnimation();
+    sprite_Logo->setVisible(true);
 }
 void WelcomeScene::setSaveMenuInVisible()
 {
 
-	menu_Save->runAction(MoveBy::create(0.3f, Point(0, -500)));
-	button_Menu_Save_Close->runAction(MoveBy::create(0.3f, Point(0, -500)));
+	menu_Save->runAction(MoveBy::create(0.3f, Point(0, -700)));
+	button_Menu_Save_Close->runAction(MoveBy::create(0.3f, Point(0, -700)));
+}
+void WelcomeScene::setSaveMenuVisible()
+{
+   
+    menu_Save->runAction(MoveTo::create(0.3f,point_Menu_Save));
+    button_Menu_Save_Close->runAction(MoveTo::create(0.3f,point_Button_Menu_Save_Close));
 }
 

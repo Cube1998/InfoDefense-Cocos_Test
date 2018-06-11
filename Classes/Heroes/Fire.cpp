@@ -36,10 +36,11 @@ bool Fire::initFire()
 	}
 	schedule(schedule_selector(Fire::update));
 	this->setSpriteFrame("hero_elemental_0001.png");
-	this->HP = 100;
-	this->HPMax = 100;
-    this->Range = 200;
+	this->HP = 400;
+	this->HPMax = 400;
+    this->Range = 100;
     this->Speed = 200;
+    this->damage = 150;
 	createAndSetHpBar();
 	lastState = StateNone;
 	auto hero_key_listener = EventListenerKeyboard::create();

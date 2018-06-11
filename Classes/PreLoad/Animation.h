@@ -18,6 +18,9 @@ public:
     
 	void createFire();
     void createThor();
+    void createDenas();
+    void createDarkSlayer();
+    
     
 };
 

@@ -61,6 +61,7 @@ void LoadingScene::Load()
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("heroes_viking-hd.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("heroes_viking_2-hd.plist");
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("heroes_denas-hd.plist");
+    SpriteFrameCache::getInstance()->addSpriteFramesWithFile("gui_menu_sprite_endless_32-hd.plist");
     
         //AllHeroGet
     
@@ -72,11 +73,17 @@ void LoadingScene::Load()
     SpriteFrameCache::getInstance()->addSpriteFramesWithFile("towers-hd.plist");
     
     loadPathFromPlist(__String::create("level6_paths.plist"));
+    loadMapListFromPlist(__String::create("level6_astar.plist"));
 
     
     loadAnimation animation;
     animation.initAnimation();
-    
+    for(int i= 0;i<60;i++)
+    {
+        for(int j=0;j<50;j++)
+                //printf("%d ",GameManager::getInstance()->MapList[i][j]);
+        printf("\n");
+    }
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic( "MusicMainMenu.mp3");
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic( "MusicMap.mp3");
     SimpleAudioEngine::getInstance()->preloadBackgroundMusic( "MusicSuspense.mp3");
@@ -110,11 +117,22 @@ void LoadingScene::loadPathFromPlist(__String *str)
                 auto tempDic = dynamic_cast<__Dictionary*>(path_array3->getObjectAtIndex(k));
                 Point tempPath = Point();
                 tempPath.x = dynamic_cast<__String*>(tempDic->objectForKey("x"))->floatValue()*1.15;
-                tempPath.y = dynamic_cast<__String*>(tempDic->objectForKey("y"))->floatValue()*1.20+50;
+                tempPath.y = dynamic_cast<__String*>(tempDic->objectForKey("y"))->floatValue()*1.20;
                 tempRandomPathVector.push_back(tempPath);
             }
             tempPathVector.push_back(tempRandomPathVector);
         }
         GameManager::getInstance()->path.push_back(tempPathVector);
+    }
+}
+void LoadingScene::loadMapListFromPlist(cocos2d::__String *str)
+{
+    auto plistDic = Dictionary::createWithContentsOfFile(str->getCString());
+    auto map_array = dynamic_cast<__Array*>(plistDic->objectForKey("grid"));
+    for(int i = 0;i<map_array->count();i++)
+    {
+        auto tempDic = dynamic_cast<__Dictionary*>(map_array->getObjectAtIndex(i));
+        
+        /*GameManager::getInstance()->MapList[dynamic_cast<__String*>(tempDic->objectForKey("column"))->intValue()][dynamic_cast<__String*>(tempDic->objectForKey("row"))->intValue()] = dynamic_cast<__String*>(tempDic->objectForKey("walkable"))->intValue();*/
     }
 }

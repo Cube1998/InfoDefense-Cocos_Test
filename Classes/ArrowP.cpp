@@ -32,3 +32,19 @@ Light * Light::creatArrow()
 	k->setSpriteFrame("sorcererbolt_0011.png");
 	return k;
 }
+
+Rocket::Rocket(Obj * ta, int atk) : Arrow(ta, atk) {}
+
+Rocket * Rocket::creatArrow(Obj * ta, int atk)
+{
+	auto k = new Rocket(ta, atk);
+	k->setSpriteFrame("burn_big_0006.png");
+	return k;
+}
+
+Rocket * Rocket::creatArrow()
+{
+	auto k = new Rocket();
+	k->setSpriteFrame("burn_big_0006.png");
+	return k;
+}

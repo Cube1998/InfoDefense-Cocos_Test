@@ -84,12 +84,38 @@ Arrow * Tower2::attack(Obj* o)
 
 Tower3::Tower3() : TowerBase(HP3, side3, could_a3, ATK3, range3) {}
 
-Tower3 * Tower3::creatTower3()
+Tower3 * Tower3::createTower3(Point point)
 {
-	return new Tower3;
+	auto tw1 = new Tower3();
+	if (tw1&&tw1->initTower3())
+	{
+		tw1->setPosition(point);
+		return tw1;
+	}
+	CC_SAFE_DELETE(tw1);
+	return NULL;
 }
 
-Arrow * Tower3::attack(Obj *)
+bool Tower3::initTower3()
 {
-	return nullptr;
+	if (!Sprite::init())
+	{
+		return false;
+	}
+	this->setSpriteFrame("archer_tower_0004.png");
+	return true;
+}
+
+bool Tower3::if_attack(Obj* o)
+{
+	cocos2d::Vec2 ds = o->getPosition() - this->getPosition();
+	float dss = sqrt(ds.x * ds.x + ds.y * ds.y);
+	if (dss < range)return true;
+	else return false;
+}
+
+Arrow * Tower3::attack(Obj* o)
+{
+	auto ar = Rocket::creatArrow(o, ATK);
+	return ar;
 }

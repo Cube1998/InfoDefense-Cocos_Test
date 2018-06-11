@@ -10,8 +10,8 @@
 
 #include <stdio.h>
 #include "cocos2d.h"
-#include "Enemy.h"
-#include "GameManager.h"
+#include "EnemyBase.h"
+//#include "GameManager.h"
 USING_NS_CC;
 typedef enum {
 	StateNone = 0,
@@ -32,11 +32,13 @@ public:
 	HeroState getState();
 	int HP;
 	int HPMax;
-    int Range = 50;
+    int Range = 100;
     int Speed = 100;
-    int damage = 30;
+    int damage = 30000;
 	Sprite* hpBgSprite;//LifeBar
 	ProgressTimer * hpBar;
+    void subHP(int da){HP-=da;}
+    int getHP(){return HP;}
 protected:
     EnemyBase *attackTarget;
 	HeroState lastState;

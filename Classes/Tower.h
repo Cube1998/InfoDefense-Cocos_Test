@@ -13,25 +13,25 @@ USING_NS_CC;
 	3: bait power
 */
 
-const int HP1(1000000);
-const int HP2(1000000);
-const int HP3(200);
+const int HP1(1000);
+const int HP2(1000);
+const int HP3(1000);
 
 const bool side1(0);
 const bool side2(0);
-const bool side3(1);
+const bool side3(0);
 
 const bool could_a1(1);
 const bool could_a2(1);
-const bool could_a3(0);
+const bool could_a3(1);
 
-const int ATK1(50);
-const int ATK2(80);
-const int ATK3(0);
+const int ATK1(40);
+const int ATK2(60);
+const int ATK3(80);
 
-const int range1(600);
-const int range2(500);
-const int range3(0);
+const int range1(300);
+const int range2(300);
+const int range3(400);
 
 class Tower1 : public TowerBase
 {
@@ -62,9 +62,13 @@ class Tower3 : public TowerBase
 {
 public:
 	Tower3();
-	static Tower3 * creatTower3();
+	static Tower3 * createTower3(Point point);
 
-	Arrow * attack(Obj*);
+	bool initTower3();
+	CREATE_FUNC(Tower3);
+
+	bool if_attack(Obj*) override;
+	Arrow * attack(Obj*) override;
 };
 
 #endif

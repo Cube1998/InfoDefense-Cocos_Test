@@ -4,7 +4,7 @@
 //
 //  Created by ’≈¥Û∑Ω on 2018/6/4.
 //
-
+#include "GameManager.h"
 #include "Hero.h"
 #include <iostream>
 using namespace std;
@@ -140,17 +140,17 @@ void Hero::searchTarget()
     if(enemyVector.size()>0)
     {
         float shortestDistance = getDistanceToEnemy(enemyVector.at(0));
-        this->attackTarget = enemyVector.at(0);
+        this->attackTarget = nullptr;
         for(int i=0;i<enemyVector.size();i++)
         {
             auto tmp = enemyVector.at(i);
             auto disTmp = getDistanceToEnemy(tmp);
-            if(shortestDistance>disTmp)
+            if(shortestDistance>=disTmp)
             {
                 shortestDistance = disTmp;
-                this->attackTarget = tmp;
+                if(shortestDistance < this->Range)
+                    this->attackTarget = tmp;
                 //CC_SAFE_DELETE(tmp);
-                
             }
         }
     }

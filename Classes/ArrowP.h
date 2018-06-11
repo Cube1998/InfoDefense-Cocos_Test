@@ -20,5 +20,14 @@ public:
 	static Light * creatArrow();
 };
 
+class Rocket : public Arrow
+{
+public:
+	Rocket(Obj *ta, int atk);
+	Rocket() = default;
+	static Rocket * creatArrow(Obj *ta, int atk);
+	static Rocket * creatArrow();
+};
+
 
 #endif // !ARROWP_H
